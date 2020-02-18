@@ -40,6 +40,10 @@
 </body>
 <script>
   $(function () {
+    // 动态设置验证码样式
+    $('.varify-input-code').attr('placeholder', '验证码');
+    $('.varify-input-code').css('text-indent', '10px');
+    
     // 通过封装了 jquery验证码组件
     $('#mpanel1').codeVerify({
       type: 1,
@@ -62,7 +66,7 @@
           alert('用户名或者密码不能为空');
           return;
         }
-        // 拼接发送请求的url
+        // 拼接发送请求的url,接口地址
         var urlString = baseUrl + port + '/login';
         // 利用ajax技术 向服务器 post 用户名和密码
 				/*
@@ -77,7 +81,7 @@
                     data: {
                         uname: get_input_user_name, upw: get_input_user_pass
                     },
-                    // 超时时间
+                    // 超时时间ms
                     timeout: 5000,
                     // 返回数据类型json数据
                     dataType: 'json',
@@ -116,9 +120,6 @@
         alert('验证码不匹配！');
       }
     });
-    // 动态设置验证码样式
-    $('.varify-input-code').attr('placeholder', '验证码');
-    $('.varify-input-code').css('text-indent', '10px');
   });
 </script>
 
