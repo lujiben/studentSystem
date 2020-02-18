@@ -43,7 +43,7 @@
     // 动态设置验证码样式
     $('.varify-input-code').attr('placeholder', '验证码');
     $('.varify-input-code').css('text-indent', '10px');
-    
+
     // 通过封装了 jquery验证码组件
     $('#mpanel1').codeVerify({
       type: 1,
@@ -108,7 +108,7 @@
                 });
 				*/
         // 模拟服务器返回成功
-        var uid = 'admin';
+        var uid = $('.textBorder')[0].value;
         var upass = 'admin';
         //保存到本地
         save_value_to_storage('USERID', uid);
