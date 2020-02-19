@@ -19,12 +19,12 @@
       <div class="navbar-wrapper">
         <ul class="nav navbar-nav nav-items">
             <li>
-                <a class="nav-item" href="#">
+                <a class="nav-item" href="#" data-toggle="modal" data-target="#infoModal">
                     <span>消息</span>
                 </a>
             </li>
             <li>
-                <a class="nav-item" href="#">
+                <a class="nav-item" href="#" data-toggle="modal" data-target="#setModal">
                     <span>设置</span>
                 </a>
             </li>
@@ -58,11 +58,56 @@
   <div class="main">
     <div class="container-fluid main-content">
       <div class="row mian-row">
-        <div class="col-md-2 left">left</div>
-        <div class="col-md-10 right">right</div>
+        <div class="col-md-2 col-lg-2 left">left</div>
+        <div class="col-md-10 col-lg-10 right">right</div>
       </div>
     </div>
   </div>
-  
+  <!-- 消息Modal -->
+  <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="infoModalLabel">站内信</h4>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li>
+              <a href="#">【系统消息】您已被选中花呗免还款！</a>
+            </li>
+            <li>【系统消息】您已被选中信用卡免还款！</li>
+            <li>【警方提示】勿信虚假消息！</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 设置Modal -->
+  <div class="modal fade" id="setModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="setModalLabel">系统设置</h4>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li><input type="checkbox" name="" id=""></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
