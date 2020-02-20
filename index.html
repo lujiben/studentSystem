@@ -35,7 +35,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="#">退出</a>
+                        <a href="./login.html">退出</a>
                     </li>
                     <li>
                         <a href="#">注销</a>
@@ -58,7 +58,18 @@
   <div class="main">
     <div class="container-fluid main-content">
       <div class="row mian-row">
-        <div class="col-md-2 col-lg-2 left">left</div>
+        <div class="col-md-2 col-lg-2 left">
+          <div class="current-user">
+            <span>当前用户:</span>
+            <span class="uname">Admin</span>
+          </div>
+          <div class="class-div">
+            <ul class="class-list">
+              <li>1班</li>
+              <li>2班</li>
+            </ul>
+          </div>
+        </div>
         <div class="col-md-10 col-lg-10 right">right</div>
       </div>
     </div>
@@ -109,5 +120,38 @@
       </div>
     </div>
   </div>
+  <script src="./js/ls.js"></script>
+  <script>
+    $(function () {
+
+      showUserName();
+      showCurrentClass();
+
+      // 显示当前用户
+      function showUserName () {
+        var uname = get_value_from_storage('USERID');
+        $('.uname').html(uname);
+      }
+
+      // 显示当前班级
+      function showCurrentClass () {
+        var classArr = ['软信1班','移动1班','网销1班'];
+        var liContent = '';
+        for(var i = 0; i < classArr.length; i ++) {
+          liContent += '<li>' + classArr[i] + '</li>'
+        }
+        $('.class-list').html(liContent);
+      }
+
+      // 事件委托/事件代理
+      $('.class-list').delegate('li', 'click', function() {
+        $('.class-list li').removeClass('active');
+        $(this).addClass('active');
+        var leftContent = $(this).html();
+        $('.right').html(leftContent);
+      })
+      
+    })
+  </script>
 </body>
 </html>

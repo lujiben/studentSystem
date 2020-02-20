@@ -58,3 +58,24 @@
 .right {
   padding: 0;
 }
+.current-user {
+  text-align: center;
+  font: 14px/38px "微软雅黑" !important;
+  color: #7e7e7e;
+  height: 38px;
+  border-bottom: solid 1px #dddddd;
+}
+.class-list li {
+  background: url(../image/xin2.jpg) no-repeat 17px center;
+  color: #678090;
+  height: 58px;
+  font: 18px/58px "微软雅黑";
+  padding-left: 53px;
+  width: 100%;
+  border-bottom: solid 1px #dddddd;
+  cursor: pointer;
+}
+.class-list li.active {
+  background-color: #fff;
+  border-right: none;
+}
