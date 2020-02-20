@@ -70,7 +70,74 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-10 col-lg-10 right">right</div>
+        <div class="col-md-10 col-lg-10 right">
+          <div class="right-content">
+            <!-- 头部 -->
+            <div class="right-header">
+              <span>当前: 首页-</span>
+              <span class="right-class">01班</span>
+            </div>
+            <!-- 班级和搜索框 -->
+            <div class="right-info">
+              <div class="col-md-8">
+                <span class="right-class">01班</span>
+              </div>
+              <div class="col-md-4">
+                <div class="searchBox fr">
+                  <div class="searchInput fl">
+                    <input type="text" placeholder="用户名">
+                  </div>
+                  <div class="searchBtn fl">
+                    <input type="submit">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 按钮组 -->
+            <div class="col-md-12">
+              <div class="right-btns">
+                <button class="btn btn-default">添加</button>
+                <button class="btn btn-info">编辑</button>
+                <button class="btn btn-danger">删除</button>
+                <button class="btn btn-success">账号授权</button>
+              </div>
+            </div>
+            <!-- 学生信息 -->
+            <div class="col-md-12">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th style="width: 2%;">
+                      <input type="checkbox">
+                    </th>
+                    <th style="width: 10%;">姓名</th>
+                    <th style="width: 10%;">学号</th>
+                    <th style="width: 15%;">手机号</th>
+                    <th style="width: 8%;">性别</th>
+                    <th style="width: 8%;">年龄</th>
+                    <th style="width: 20%;">专业</th>
+                    <th style="width: 27%;">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td>张三丰</td>
+                    <td>001</td>
+                    <td>189999999</td>
+                    <td>男</td>
+                    <td>18</td>
+                    <td>移动应用开发</td>
+                    <td>
+                      <button class="btn btn-info">编辑</button>
+                      <button class="btn btn-danger">删除</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -150,6 +217,54 @@
         var leftContent = $(this).html();
         $('.right').html(leftContent);
       })
+
+      // 学生信息
+      var students_json_01 = {
+        "resultCode": 200,
+        "resultMessage": "ok",
+        "data": [
+            {
+                "id": "1",
+                "sno": "001",
+                "truename": "张三",
+                "age": "20",
+                "gender": "m",
+                "tel": "13289069832",
+                "major": "英语",
+                "classid": "1"
+            },
+            {
+                "id": "2",
+                "sno": "002",
+                "truename": "张三丰",
+                "age": "20",
+                "gender": "m",
+                "tel": "13289069832",
+                "major": "汉语",
+                "classid": "1"
+            },
+            {
+                "id": "3",
+                "sno": "003",
+                "truename": "张无忌",
+                "age": "19",
+                "gender": "m",
+                "tel": "13289069832",
+                "major": "软件",
+                "classid": "1"
+            },
+            {
+                "id": "4",
+                "sno": "004",
+                "truename": "周芷若",
+                "age": "18",
+                "gender": "f",
+                "tel": "13289069832",
+                "major": "网络",
+                "classid": "1"
+            }
+        ]
+};
       
     })
   </script>

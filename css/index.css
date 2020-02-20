@@ -79,3 +79,64 @@
   background-color: #fff;
   border-right: none;
 }
+.right-header {
+  height: 38px;
+  line-height: 38px;
+  background-color: rgb(245,245,245);
+  color: rgb(160, 160, 160);
+  padding-left: 20px;
+  font-size: 14px;
+}
+.right-info {
+  height: 60px;
+}
+.right-info .right-class {
+  color: rgb(0, 149, 218);
+  font: bold 18px / 60px 微软雅黑;
+}
+.searchBox {
+  padding-top: 15px;
+  padding-right: 24px;
+  width: 320px;
+}
+.searchInput {
+  height: 30px;
+  width: 244px;
+  overflow: hidden;
+}
+.searchInput input {
+    width: 243px;
+    border: solid 1px #ddd;
+    height: 30px;
+    text-indent: 10px;
+}
+.searchBtn {
+  height: 30px;
+  width: 36px;
+  margin-right: 10px;
+}
+.searchBtn input {
+  background: url('../image/search.jpg');
+  width: 36px;
+  height: 30px;
+  border: none;
+  text-indent: -999px;
+}
+.right-btns {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+.table>thead {
+  background: rgb(241, 244, 249);
+}
+.table tr td, 
+.table tr th {
+  font: 18px/37px "微软雅黑";
+  color: #808080;
+}
