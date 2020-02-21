@@ -119,7 +119,7 @@
                     <th style="width: 27%;">操作</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="studnet-info">
                   <tr>
                     <td><input type="checkbox" name="" id=""></td>
                     <td>张三丰</td>
@@ -226,7 +226,7 @@
             {
                 "id": "1",
                 "sno": "001",
-                "truename": "张三",
+                "truename": "张翠山",
                 "age": "20",
                 "gender": "m",
                 "tel": "13289069832",
@@ -262,11 +262,41 @@
                 "tel": "13289069832",
                 "major": "网络",
                 "classid": "1"
+            },
+            {
+                "id": "5",
+                "sno": "005",
+                "truename": "赵敏",
+                "age": "18",
+                "gender": "f",
+                "tel": "13289069866",
+                "major": "郡主",
+                "classid": "1"
             }
         ]
-};
-      
+      };
+
+      var studnetArr = students_json_01.data;
+      var studnetContent = '';
+      for(var i = 0; i < studnetArr.length; i ++) {
+        studnetContent += "<tr data-index="+i+"><td><input type='checkbox'></td>"+
+                    " <td>" + studnetArr[i].truename + "</td>" +
+                    " <td>" + studnetArr[i].sno + "</td>" +
+                    " <td>" + studnetArr[i].tel + "</td> " +
+                    " <td>" + (studnetArr[i].gender == 'm' ? '男' : '女') + "</td> " +
+                    " <td>" + studnetArr[i].age + "</td> " +
+                    " <td>" + studnetArr[i].major + "</td> " +
+                    " <td><button class='btn btn-edit btn-info'>编辑</button>" +
+                    " <button class='btn btn-del btn-danger'>删除</button></td></tr>"
+      }
+      $('.studnet-info').html(studnetContent);
+
+      $('.studnet-info').delegate('.btn-edit', 'click', function() {
+        console.log($(this).parents('tr').attr('data-index'));
+      })
+
     })
+
   </script>
 </body>
 </html>
