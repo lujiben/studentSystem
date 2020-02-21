@@ -120,7 +120,7 @@
                   </tr>
                 </thead>
                 <tbody class="studnet-info">
-                  <tr>
+                  <!-- <tr>
                     <td><input type="checkbox" name="" id=""></td>
                     <td>张三丰</td>
                     <td>001</td>
@@ -132,7 +132,7 @@
                       <button class="btn btn-info">编辑</button>
                       <button class="btn btn-danger">删除</button>
                     </td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </div>
@@ -187,12 +187,75 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"><span class="stu-title"></span>学生信息</h4>
+        </div>
+        <div class="modal-body stu-modal-body">
+          <div class="col-md-12">
+            <div class="col-md-4">
+                <div class="e-tr">
+                    <label class="e-td" for="">姓名</label>
+                    <input class="e-td e-input e-name" type="text" placeholder="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="e-tr">
+                    <label class="e-td" for="">学号</label>
+                    <input class="e-td e-input" type="text" placeholder="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="e-tr">
+                    <label class="e-td" for="">手机号</label>
+                    <input class="e-td e-input" type="text" placeholder="">
+                </div>
+            </div>
+            <div class="col-md-4" role="form">
+                <div class="e-tr">
+                    <!-- <label class="e-td" for="">性别</label><input class="e-td e-input" type="text" placeholder="新蓝剑"> -->
+                    <label class="e-td" for="">性别</label>
+                    <select id="u-select" class="e-select" style="background-color: #fff;">
+                        <option value="m">男</option>
+                        <option value="f">女</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="e-tr">
+                    <label class="e-td" for="">年龄</label>
+                    <input class="e-td e-input" type="text" placeholder="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="e-tr">
+                    <label class="e-td" for="">专&nbsp;&nbsp;&nbsp;&nbsp;业</label>
+                    <input class="e-td e-input" type="text" placeholder="">
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
   <script src="./js/ls.js"></script>
+  <script src="./js/json.js"></script>
   <script>
     $(function () {
 
       showUserName();
       showCurrentClass();
+      showStuInfo();
 
       // 显示当前用户
       function showUserName () {
@@ -202,10 +265,11 @@
 
       // 显示当前班级
       function showCurrentClass () {
-        var classArr = ['软信1班','移动1班','网销1班'];
+        // class_json来自json.js
+        var classArr = class_json.data;
         var liContent = '';
         for(var i = 0; i < classArr.length; i ++) {
-          liContent += '<li>' + classArr[i] + '</li>'
+          liContent += '<li>' + classArr[i].classname + '</li>'
         }
         $('.class-list').html(liContent);
       }
@@ -214,85 +278,35 @@
       $('.class-list').delegate('li', 'click', function() {
         $('.class-list li').removeClass('active');
         $(this).addClass('active');
-        var leftContent = $(this).html();
-        $('.right').html(leftContent);
+        showStuInfo(className);
+        // var leftContent = $(this).html();
+        // $('.right').html(leftContent);
       })
 
-      // 学生信息
-      var students_json_01 = {
-        "resultCode": 200,
-        "resultMessage": "ok",
-        "data": [
-            {
-                "id": "1",
-                "sno": "001",
-                "truename": "张翠山",
-                "age": "20",
-                "gender": "m",
-                "tel": "13289069832",
-                "major": "英语",
-                "classid": "1"
-            },
-            {
-                "id": "2",
-                "sno": "002",
-                "truename": "张三丰",
-                "age": "20",
-                "gender": "m",
-                "tel": "13289069832",
-                "major": "汉语",
-                "classid": "1"
-            },
-            {
-                "id": "3",
-                "sno": "003",
-                "truename": "张无忌",
-                "age": "19",
-                "gender": "m",
-                "tel": "13289069832",
-                "major": "软件",
-                "classid": "1"
-            },
-            {
-                "id": "4",
-                "sno": "004",
-                "truename": "周芷若",
-                "age": "18",
-                "gender": "f",
-                "tel": "13289069832",
-                "major": "网络",
-                "classid": "1"
-            },
-            {
-                "id": "5",
-                "sno": "005",
-                "truename": "赵敏",
-                "age": "18",
-                "gender": "f",
-                "tel": "13289069866",
-                "major": "郡主",
-                "classid": "1"
-            }
-        ]
-      };
-
-      var studnetArr = students_json_01.data;
-      var studnetContent = '';
-      for(var i = 0; i < studnetArr.length; i ++) {
-        studnetContent += "<tr data-index="+i+"><td><input type='checkbox'></td>"+
-                    " <td>" + studnetArr[i].truename + "</td>" +
-                    " <td>" + studnetArr[i].sno + "</td>" +
-                    " <td>" + studnetArr[i].tel + "</td> " +
-                    " <td>" + (studnetArr[i].gender == 'm' ? '男' : '女') + "</td> " +
-                    " <td>" + studnetArr[i].age + "</td> " +
-                    " <td>" + studnetArr[i].major + "</td> " +
-                    " <td><button class='btn btn-edit btn-info'>编辑</button>" +
-                    " <button class='btn btn-del btn-danger'>删除</button></td></tr>"
+      // 显示学生信息
+      function showStuInfo () {
+        // students_json_01来自json.js
+        var studnetArr = students_json_01.data;
+        var studnetContent = '';
+        for(var i = 0; i < studnetArr.length; i ++) {
+          studnetContent += "<tr data-index="+i+"><td><input type='checkbox'></td>"+
+                      " <td>" + studnetArr[i].truename + "</td>" +
+                      " <td>" + studnetArr[i].sno + "</td>" +
+                      " <td>" + studnetArr[i].tel + "</td> " +
+                      " <td>" + (studnetArr[i].gender == 'm' ? '男' : '女') + "</td> " +
+                      " <td>" + studnetArr[i].age + "</td> " +
+                      " <td>" + studnetArr[i].major + "</td> " +
+                      " <td><button class='btn btn-edit btn-info' data-toggle='modal' data-target='#myModal'>编辑</button>" +
+                      " <button class='btn btn-del btn-danger'>删除</button></td></tr>"
+        }
+        $('.studnet-info').html(studnetContent);
       }
-      $('.studnet-info').html(studnetContent);
-
+      
       $('.studnet-info').delegate('.btn-edit', 'click', function() {
         console.log($(this).parents('tr').attr('data-index'));
+        // $('.e-name').val(777);  // 给输入框赋值
+        // console.log($('.e-name').val())// 获取输入框的值
+        // $(this).parents('tr').find('input').prop('checked', true)
       })
 
     })

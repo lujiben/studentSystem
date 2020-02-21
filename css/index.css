@@ -143,3 +143,60 @@
 .btn-del {
   margin-left: 10px;
 }
+#myModal .modal-dialog {
+  width: 800px;
+}
+.e-tr {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  color: #678090;
+  padding: 0 10px;
+  margin-top: 20px;
+}
+.e-tr label {
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+  margin: 0;
+  background: #fff;
+  font-weight: normal;
+  vertical-align: middle;
+}
+.e-tr input {
+  width: 110px;
+  height: 40px;
+  text-indent: 10px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  padding: 0;
+  vertical-align: middle;
+  border: 1px solid #ccc;
+}
+.e-tr input:focus {
+  border: 1px solid #56a5f1;
+  border-radius: 4px;
+  outline: 1px solid #56a5f1;
+}
+.e-select {
+  width: 110px;
+  height: 40px;
+  vertical-align: middle;
+  border-radius: 0px;
+  background: #fff;
+  border: 1px solid #ccc;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: url(../image/arrow.png) no-repeat scroll right center transparent;
+  padding-right: 14px;
+  text-indent: 10px;
+}
+.u-infors .col-md-4, .u-infors .col-md-9 {
+  padding: 0;
+}
+.stu-modal-body {
+  height: 160px;
+}
