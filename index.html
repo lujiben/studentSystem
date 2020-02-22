@@ -96,7 +96,7 @@
             <!-- 按钮组 -->
             <div class="col-md-12">
               <div class="right-btns">
-                <button class="btn btn-default">添加</button>
+                <button class="btn btn-default add-stu-btn" data-toggle="modal" data-target="#myModal">添加</button>
                 <button class="btn btn-info">编辑</button>
                 <button class="btn btn-danger">删除</button>
                 <button class="btn btn-success">账号授权</button>
@@ -120,19 +120,6 @@
                   </tr>
                 </thead>
                 <tbody class="studnet-info">
-                  <!-- <tr>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td>张三丰</td>
-                    <td>001</td>
-                    <td>189999999</td>
-                    <td>男</td>
-                    <td>18</td>
-                    <td>移动应用开发</td>
-                    <td>
-                      <button class="btn btn-info">编辑</button>
-                      <button class="btn btn-danger">删除</button>
-                    </td>
-                  </tr> -->
                 </tbody>
               </table>
             </div>
@@ -195,7 +182,9 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel"><span class="stu-title"></span>学生信息</h4>
+          <h4 class="modal-title" id="myModalLabel">
+            <span class="stu-title">新增</span>学生信息
+          </h4>
         </div>
         <div class="modal-body stu-modal-body">
           <div class="col-md-12">
@@ -208,13 +197,13 @@
             <div class="col-md-4">
                 <div class="e-tr">
                     <label class="e-td" for="">学号</label>
-                    <input class="e-td e-input" type="text" placeholder="">
+                    <input class="e-td e-input e-sno" type="text" placeholder="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="e-tr">
                     <label class="e-td" for="">手机号</label>
-                    <input class="e-td e-input" type="text" placeholder="">
+                    <input class="e-td e-input e-tel" type="text" placeholder="">
                 </div>
             </div>
             <div class="col-md-4" role="form">
@@ -229,20 +218,20 @@
             <div class="col-md-4">
                 <div class="e-tr">
                     <label class="e-td" for="">年龄</label>
-                    <input class="e-td e-input" type="text" placeholder="">
+                    <input class="e-td e-input e-age" type="text" placeholder="">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="e-tr">
                     <label class="e-td" for="">专&nbsp;&nbsp;&nbsp;&nbsp;业</label>
-                    <input class="e-td e-input" type="text" placeholder="">
+                    <input class="e-td e-input e-major" type="text" placeholder="">
                 </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary">确定</button>
+          <button type="button" class="btn btn-primary addEditBtn">确定</button>
         </div>
       </div>
     </div>
@@ -307,6 +296,9 @@
         $(this).addClass('active');
         // 更新班级索引
         classIndex = $(this).attr('data-index');
+        // 更新右侧班级名称
+        var classTxt = $(this).html();
+        $('.right-class').html(classTxt);
         showStuInfo();
       })
 
@@ -322,14 +314,65 @@
             " <td>" + studnetArr[classIndex][i].age + "</td> " +
             " <td>" + studnetArr[classIndex][i].major + "</td> " +
             " <td><button class='btn btn-edit btn-info btn-index' data-toggle='modal' data-target='#myModal'>编辑</button>" +
-            " <button class='btn btn-del btn-danger btn-index'  data-toggle='modal' data-target='#delModal'>删除</button></td></tr>"
+            " <button class='btn btn-del btn-danger btn-index' data-toggle='modal' data-target='#delModal'>删除</button></td></tr>"
         }
         $('.studnet-info').html(studnetContent);
       }
       
+      // 获取学生在本班级中的序号
       $('.studnet-info').delegate('.btn-index', 'click', function() {
         trIndex = $(this).parents('tr').attr('data-index');
-        console.log(studnetArr[classIndex][trIndex])
+      })
+
+      // 编辑学生信息
+      $('.studnet-info').delegate('.btn-edit', 'click', function() {
+        $('.stu-title').html('编辑');
+        var stu = studnetArr[classIndex][trIndex];
+        // 讲该学生的信息填入对应输入框
+        $('.e-name').val(stu.truename);
+        $('.e-sno').val(stu.sno);
+        $('.e-tel').val(stu.tel);
+        $('.e-select').val(stu.gender);
+        $('.e-major').val(stu.major);
+        $('.e-age').val(stu.age);
+        // 当前编辑状态：编辑
+        $('.addEditBtn').attr('edit-status', 'edit');
+      })
+
+      // 新增学生信息
+      $('.add-stu-btn').click(function() {
+        // 置空输入框
+        $('.e-name').val('');
+        $('.e-sno').val('');
+        $('.e-tel').val('');
+        $('.e-select').val('m');
+        $('.e-major').val('');
+        $('.e-age').val('');
+        // 当前编辑状态：新增
+        $('.addEditBtn').attr('edit-status', 'add');
+      })
+
+      // 新增或编辑学生的保存按钮
+      $('.addEditBtn').click(function () {
+        var stu = {};
+        // 获取输入框中的学生数据
+        stu.truename = $('.e-name').val();
+        stu.sno = $('.e-sno').val();
+        stu.tel = $('.e-tel').val();
+        stu.gender = $('.e-select').val();
+        stu.major = $('.e-major').val();
+        stu.age = $('.e-age').val();
+        // 判断是新增还是编辑
+        var status = $(this).attr('edit-status');
+        if(status === 'add'){
+          studnetArr[classIndex].push(stu);
+        } else {
+          studnetArr[classIndex].splice(trIndex * 1, 1, stu);
+        }
+        // 用新的数据更新页面
+        showStuInfo();
+        // 关闭模态框
+        $('#myModal').modal('hide');
       })
 
       // 删除学生信息
@@ -339,7 +382,7 @@
         // 用新的数据更新页面
         showStuInfo();
         // 关闭模态框
-        $('#delModal').modal('hide')
+        $('#delModal').modal('hide');
       })
 
     })
