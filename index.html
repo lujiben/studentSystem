@@ -305,8 +305,9 @@
       $('.class-list').delegate('li', 'click', function() {
         $('.class-list li').removeClass('active');
         $(this).addClass('active');
+        // 更新班级索引
         classIndex = $(this).attr('data-index');
-        showStuInfo(classIndex);
+        showStuInfo();
       })
 
       // 显示学生信息
@@ -329,9 +330,6 @@
       $('.studnet-info').delegate('.btn-index', 'click', function() {
         trIndex = $(this).parents('tr').attr('data-index');
         console.log(studnetArr[classIndex][trIndex])
-        // $('.e-name').val(777);  // 给输入框赋值
-        // console.log($('.e-name').val())// 获取输入框的值
-        // $(this).parents('tr').find('input').prop('checked', true)
       })
 
       // 删除学生信息
