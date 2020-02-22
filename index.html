@@ -189,6 +189,7 @@
   </div>
 
   <!-- Modal -->
+  <!-- 新增&编辑 -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -218,7 +219,6 @@
             </div>
             <div class="col-md-4" role="form">
                 <div class="e-tr">
-                    <!-- <label class="e-td" for="">性别</label><input class="e-td e-input" type="text" placeholder="新蓝剑"> -->
                     <label class="e-td" for="">性别</label>
                     <select id="u-select" class="e-select" style="background-color: #fff;">
                         <option value="m">男</option>
@@ -241,8 +241,27 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 删除 -->
+  <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="delModalLabel">提示</h4>
+        </div>
+        <div class="modal-body">
+          <p>确定要删除吗？</p>
+          <p>此操作不可恢复</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary del-sure">确定</button>
         </div>
       </div>
     </div>
@@ -252,6 +271,13 @@
   <script src="./js/json.js"></script>
   <script>
     $(function () {
+
+      // 左侧激活班级的索引
+      var classIndex = 0;
+      // 右侧学生所在行的索引
+      var trIndex = 0;
+      // 所有的学生信息来自json.js
+      var studnetArr = [students_json_01.data, students_json_02.data];
 
       showUserName();
       showCurrentClass();
@@ -263,50 +289,59 @@
         $('.uname').html(uname);
       }
 
-      // 显示当前班级
+      // 显示当前所有班级
       function showCurrentClass () {
         // class_json来自json.js
         var classArr = class_json.data;
         var liContent = '';
         for(var i = 0; i < classArr.length; i ++) {
-          liContent += '<li>' + classArr[i].classname + '</li>'
+          liContent += '<li data-index=' + i +'>' + classArr[i].classname + '</li>'
         }
         $('.class-list').html(liContent);
+        $('.class-list li').eq(0).addClass('active');
       }
 
-      // 事件委托/事件代理
+      // 点击班级列表，切换学生信息
       $('.class-list').delegate('li', 'click', function() {
         $('.class-list li').removeClass('active');
         $(this).addClass('active');
-        showStuInfo(className);
-        // var leftContent = $(this).html();
-        // $('.right').html(leftContent);
+        classIndex = $(this).attr('data-index');
+        showStuInfo(classIndex);
       })
 
       // 显示学生信息
       function showStuInfo () {
-        // students_json_01来自json.js
-        var studnetArr = students_json_01.data;
         var studnetContent = '';
-        for(var i = 0; i < studnetArr.length; i ++) {
+        for(var i = 0; i < studnetArr[classIndex].length; i ++) {
           studnetContent += "<tr data-index="+i+"><td><input type='checkbox'></td>"+
-                      " <td>" + studnetArr[i].truename + "</td>" +
-                      " <td>" + studnetArr[i].sno + "</td>" +
-                      " <td>" + studnetArr[i].tel + "</td> " +
-                      " <td>" + (studnetArr[i].gender == 'm' ? '男' : '女') + "</td> " +
-                      " <td>" + studnetArr[i].age + "</td> " +
-                      " <td>" + studnetArr[i].major + "</td> " +
-                      " <td><button class='btn btn-edit btn-info' data-toggle='modal' data-target='#myModal'>编辑</button>" +
-                      " <button class='btn btn-del btn-danger'>删除</button></td></tr>"
+            " <td>" + studnetArr[classIndex][i].truename + "</td>" +
+            " <td>" + studnetArr[classIndex][i].sno + "</td>" +
+            " <td>" + studnetArr[classIndex][i].tel + "</td> " +
+            " <td>" + (studnetArr[classIndex][i].gender == 'm' ? '男' : '女') + "</td> " +
+            " <td>" + studnetArr[classIndex][i].age + "</td> " +
+            " <td>" + studnetArr[classIndex][i].major + "</td> " +
+            " <td><button class='btn btn-edit btn-info btn-index' data-toggle='modal' data-target='#myModal'>编辑</button>" +
+            " <button class='btn btn-del btn-danger btn-index'  data-toggle='modal' data-target='#delModal'>删除</button></td></tr>"
         }
         $('.studnet-info').html(studnetContent);
       }
       
-      $('.studnet-info').delegate('.btn-edit', 'click', function() {
-        console.log($(this).parents('tr').attr('data-index'));
+      $('.studnet-info').delegate('.btn-index', 'click', function() {
+        trIndex = $(this).parents('tr').attr('data-index');
+        console.log(studnetArr[classIndex][trIndex])
         // $('.e-name').val(777);  // 给输入框赋值
         // console.log($('.e-name').val())// 获取输入框的值
         // $(this).parents('tr').find('input').prop('checked', true)
+      })
+
+      // 删除学生信息
+      $('.del-sure').click(function() {
+        // 删掉对应的学生信息
+        studnetArr[classIndex].splice(trIndex * 1, 1);
+        // 用新的数据更新页面
+        showStuInfo();
+        // 关闭模态框
+        $('#delModal').modal('hide')
       })
 
     })
