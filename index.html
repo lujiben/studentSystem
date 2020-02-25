@@ -108,7 +108,7 @@
                 <thead>
                   <tr>
                     <th style="width: 2%;">
-                      <input type="checkbox">
+                      <input class="all-check" type="checkbox">
                     </th>
                     <th style="width: 10%;">姓名</th>
                     <th style="width: 10%;">学号</th>
@@ -306,7 +306,7 @@
       function showStuInfo () {
         var studnetContent = '';
         for(var i = 0; i < studnetArr[classIndex].length; i ++) {
-          studnetContent += "<tr data-index="+i+"><td><input type='checkbox'></td>"+
+          studnetContent += "<tr data-index="+i+"><td><input class='stu-check' type='checkbox'></td>"+
             " <td>" + studnetArr[classIndex][i].truename + "</td>" +
             " <td>" + studnetArr[classIndex][i].sno + "</td>" +
             " <td>" + studnetArr[classIndex][i].tel + "</td> " +
@@ -383,6 +383,24 @@
         showStuInfo();
         // 关闭模态框
         $('#delModal').modal('hide');
+      })
+
+      // 点击全选按钮
+      $('.all-check').change(function() {
+        var flag = $(this).prop('checked');
+        // $().each是备选方案
+        $('.stu-check').prop('checked', flag)
+      })
+
+      // 点击每一项
+      $('.stu-check').on('change', function() {
+        if($('.stu-check:checked').length == $('.stu-check').length) {
+          $('.all-check').prop('checked', true);
+        }else {
+          $('.all-check').prop('checked', false);
+        }
+        // 追求极致简洁的代码，损失了可读性：
+        // $('.all-check').prop('checked', $('.stu-check:checked').length == $('.stu-check').length);
       })
 
     })
