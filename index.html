@@ -267,10 +267,34 @@
       var trIndex = 0;
       // 所有的学生信息来自json.js
       var studnetArr = [students_json_01.data, students_json_02.data];
+      //数据初始化
+      initData();
 
       showUserName();
       showCurrentClass();
       showStuInfo();
+      saveInfo(false);
+      function saveInfo(flag) {
+        if(!localStorage.getItem('info') || flag) {
+          var info = JSON.stringify(studnetArr);
+          localStorage.setItem('info', info);
+          //保存数据
+        }
+        studnetArr = backString(localStorage.getItem('info'));
+        showStuInfo();
+        //保存之后刷新数据
+      }
+      //还原字符串
+      function backString(val) {
+        return JSON.parse(val);
+      }
+      //初始化数据
+      function initData() {
+        //如果本地有数据就拿本地，如果没有使用js内的默认数据
+        if(localStorage.getItem('info')) {
+          studnetArr = backString(localStorage.getItem('info'))
+        }
+      }
 
       // 显示当前用户
       function showUserName () {
@@ -370,7 +394,7 @@
           studnetArr[classIndex].splice(trIndex * 1, 1, stu);
         }
         // 用新的数据更新页面
-        showStuInfo();
+        saveInfo(true);
         // 关闭模态框
         $('#myModal').modal('hide');
       })
@@ -380,7 +404,7 @@
         // 删掉对应的学生信息
         studnetArr[classIndex].splice(trIndex * 1, 1);
         // 用新的数据更新页面
-        showStuInfo();
+        saveInfo(true);
         // 关闭模态框
         $('#delModal').modal('hide');
       })
