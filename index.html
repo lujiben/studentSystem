@@ -268,10 +268,23 @@
       // 所有的学生信息来自json.js
       var studnetArr = [students_json_01.data, students_json_02.data];
 
+      saveStuInfo(false)
       showUserName();
       showCurrentClass();
       showStuInfo();
 
+      // 学生信息的本地持久存储
+      function saveStuInfo (flag) {
+        // 没有localStorage，或者有数据需要更新，就存到本地
+        if(!localStorage.getItem('stuInfo') || flag) {
+          var stuStr = JSON.stringify(studnetArr)
+          localStorage.setItem('stuInfo', stuStr);
+          console.log('update')
+        }else {
+        // 有localStorage，就用这个
+          studnetArr = JSON.parse(localStorage.getItem('stuInfo'))
+        } 
+      }
       // 显示当前用户
       function showUserName () {
         var uname = get_value_from_storage('USERID');
@@ -371,6 +384,7 @@
         }
         // 用新的数据更新页面
         showStuInfo();
+        saveStuInfo(true);
         // 关闭模态框
         $('#myModal').modal('hide');
       })
@@ -381,6 +395,7 @@
         studnetArr[classIndex].splice(trIndex * 1, 1);
         // 用新的数据更新页面
         showStuInfo();
+        saveStuInfo(true);
         // 关闭模态框
         $('#delModal').modal('hide');
       })
