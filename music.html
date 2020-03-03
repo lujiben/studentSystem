@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网易音乐试听</title>
+  <style>
+    .content {
+      width: 400px;
+      height: 400px;
+      border: 1px solid #eeeeee;
+      border-radius: 6px;
+      box-shadow: 5px 5px 5px #666666;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+    .btn {
+      width: 60px;
+      height: 30px;
+      line-height: 30px;
+      color: #ffffff;
+      background-color: #007CF9;
+      text-align: center;
+      border-radius: 5px;
+    }
+    .btn:hover {
+      cursor: pointer;
+    }
+    .picUrl {
+      width: 250px;
+      height: 250px;
+    }
+    .listing {
+      width: 100%;
+    }
+    .loading {
+      position: fixed;
+      left: 50%;
+      top: 20px;
+      width: 20px;
+      height: 20px;
+      border-top: solid 20px transparent;
+      border-right: solid 20px transparent;
+      border-bottom: solid 20px transparent;
+      border-left: solid 20px transparent;
+      border-radius: 50%;
+      animation: loading 5s ease-in infinite;
+    }
+    @keyframes loading {
+      0% {
+        border-top: solid 20px transparent;
+        border-right: solid 20px transparent;
+        border-bottom: solid 20px transparent;
+        border-left-color: #FF79C6;
+      }
+      25% {
+        border-top-color: #007CF9;
+        border-right: solid 20px transparent;
+        border-bottom: solid 20px transparent;
+        border-left: solid 20px transparent;
+      }
+      50% {
+        border-top: solid 20px transparent;
+        border-right-color: #4FC1A0;
+        border-bottom: solid 20px transparent;
+        border-left: solid 20px transparent;
+      }
+      75% {
+        border-top: solid 20px transparent;
+        border-right: solid 20px transparent;
+        border-bottom-color: #EF6329;
+        border-left: solid 20px transparent;
+      }
+      100% {
+        border-top: solid 20px transparent;
+        border-right: solid 20px transparent;
+        border-bottom: solid 20px transparent;
+        border-left-color: #FF79C6;
+      }
+    }
+  </style>
+</head>
+<body>
+  <label for="song_id">音乐ID：</label>
+  <input type="text" value="28012031" placeholder="请输入歌曲ID" name="" id="song_id">
+  <br>
+  <br>
+  <label for="song">歌曲</label><input type="radio" name="choose" value="song" id="song">
+  <label for="lyric">歌词</label><input type="radio" name="choose" value="lyric" id="lyric">
+  <label for="comments">评论</label><input type="radio" name="choose" value="comments" id="comments">
+  <label for="detail">详情</label><input type="radio" name="choose" value="detail" id="detail">
+  <br>
+  <br><br>
+  <div class="btn">查看</div>
+  <p class="content">
+  
+  </p>
+  <div class="loading"></div>
+</body>
+<script src="./js//jquery-3.3.1.min.js"></script>
+<script src="./layer/layer.js"></script>
+<script>
+  $(function() {
+    //'https://api.imjad.cn/cloudmusic/?type='+type+'&id='+id+'&br=128000';
+    $('.btn').click(function() {
+      // var load = layer.load(2, {time: 5*1000, offset: ['300px', '180px']});
+      var id = $('#song_id').val();
+      var type = $('input[type=radio]:checked').val();
+      $.ajax({
+        type: "get",
+        url: "https://api.imjad.cn/cloudmusic/",
+        data: {
+          type,
+          id,
+          br: 128000
+        },
+        dataType: "json",
+        success: function (res) {
+          let h5;  
+          switch (type) {
+            case 'song':
+              h5 = `
+                <audio class="listing" src="${res.data[0].url}" controls></audio>
+              `
+              break;
+            case 'lyric':
+              h5 = `
+                <span>${res.lrc.lyric}</span>
+              `
+              break;
+            case 'comments':
+              h5 = `
+                <span>暂时没有更多的评论。</span>
+              `
+              break;
+            case 'detail':
+            let songs = res.songs[0];
+              h5 = `
+                <span>歌曲名称：${songs.name}</span><br/>
+                <span>专辑：${songs.alia[0]}</span><br/>
+                <span>作者：${songs.ar[0].name}</span><br/>
+                <span>封面：</span><br/>
+                <img class='picUrl' src='${songs.al.picUrl}'</img>
+              `
+            default:
+              break;
+          }
+          $('.content').html(h5);
+          // layer.close(load);
+          console.log(res);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    })
+  })
+</script>
+</html>
