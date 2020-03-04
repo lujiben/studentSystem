@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      border: none;
+    }
+
+    .title {
+      padding: 0.3125rem 1.25rem;
+      float: left;
+      border: solid 1px #cccccc;
+      cursor: pointer;
+      border-top-left-radius: 0.375rem;
+      border-top-right-radius: 0.375rem;
+      z-index: 9;
+      background: linear-gradient(to bottom, #fff, #666);
+    }
+
+    .active {
+      background: linear-gradient(to top, #fff 30%, #666) !important;
+      border-bottom: none;
+    }
+
+    .wapper {
+      width: 500px;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    #content {
+      clear: both;
+      width: 500px;
+      height: 18.75rem;
+      float: left;
+      position: relative;
+      top: -2px;
+      z-index: -9;
+      border: solid 1px #cccccc;
+      background: linear-gradient(to bottom, #fff, #666);
+      padding: 10px;
+      overflow-y: scroll;
+    }
+
+    #seach {
+      width: 450px;
+      height: 30px;
+      margin: 20px auto;
+      display: flex;
+      background-color: rgb(61, 182, 255);
+      color: #fff;
+      border-radius: 3px;
+      font-size: 15px;
+    }
+
+    .song_id {
+      text-indent: 7px;
+      flex: 4;
+      outline: none;
+    }
+
+    .seach_btn {
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .listing {
+      width: 100%;
+    }
+
+    .picUrl {
+      width: 250px;
+      height: 250px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="seach">
+    <input class="song_id" type="text" value="28012031" placeholder="请输入音乐ID">
+    <div class="seach_btn">搜索</div>
+  </div>
+  <div class="wapper">
+    <div class="active title song">歌曲</div>
+    <div class="title lyric">歌词</div>
+    <div class="title comments">评论</div>
+    <div class="title deatil">详情</div>
+    <div id="content">
+
+    </div>
+  </div>
+</body>
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script>
+  let songPage = lyricPage = commentsPage = detailPage = '请先搜索音乐ID~';
+  let contentList = [songPage, lyricPage, commentsPage, detailPage];
+  //初始化内容
+  content.innerHTML = contentList[0];
+  //声明ajax函数
+  function request(url, data, resolve, reject) {
+    $.ajax({
+      type: "get",
+      url,
+      data,
+      dataType: "json",
+      success: resolve,
+      error: reject
+    });
+  }
+  //处理异步 promise
+  function sendRequest(url, data) {
+    return new Promise(function (resolve, reject) {
+      request(url, data, resolve, reject);
+    })
+  }
+  //请求接口
+  let url = 'http://api.imjad.cn/cloudmusic/';
+  let id = document.querySelector('.song_id').value;
+  let data = {
+    type: 'song',
+    id,
+    br: 128000
+  }
+  let seach_btn = document.querySelector('.seach_btn');
+  //按下按钮请求数据
+  seach_btn.onclick = function () {
+    sendRequest(url, data).then(function (res) {
+      // console.log(res);
+      songPage = `
+      <audio class="listing" src="${res.data[0].url}" controls></audio>
+    `
+      data.type = 'lyric';
+      return sendRequest(url, data);
+    }).then(function (res) {
+      // console.log(res);
+      lyricPage = `
+      <span>${res.lrc.lyric}</span>
+    `
+      data.type = 'comments';
+      return sendRequest(url, data);
+    }).then(function (res) {
+      // console.log(res);
+      commentsPage = `
+      <span>暂时没有更多的评论。</span>    
+    `
+      data.type = 'detail';
+      return sendRequest(url, data);
+    }).then(function (res) {
+      // console.log(res);
+      let songs = res.songs[0];
+      detailPage = `
+      <span>歌曲名称：${songs.name}</span><br/>
+      <span>专辑：${songs.alia[0]}</span><br/>
+      <span>作者：${songs.ar[0].name}</span><br/>
+      <span>封面：</span><br/>
+      <img class='picUrl' src='${songs.al.picUrl}'</img>
+    `
+      data.type = 'song';
+      //更新数据 也可以在每个请求后改contentList[n] = ``;
+      contentList = [songPage, lyricPage, commentsPage, detailPage];
+      //在当前选项卡展示正确信息
+      content.innerHTML = contentList[currentIndex];
+    }).catch(function (err) {
+      // console.log(err);
+      alert('系统正忙，请稍后重试！');
+    })
+  }
+
+  //选中所有按钮
+  let btns = document.querySelectorAll('.title');
+  //默认选中的元素
+  let currentBtn = btns[0];
+  //当前选中的序号
+  let currentIndex = 0;
+  for (let i = 0; i < btns.length; i++) {
+    //定义obj是当前循环到的元素
+    let obj = btns[i];
+    //相当于给obj添加自定义属性
+    obj.index = i;
+    //给予元素点击事件   传入参数是原生元素e
+    obj.onclick = function (e) {
+      //替换内容
+      content.innerHTML = contentList[e.target.index];
+      //给当前元素添加class this相当于e.target
+      this.classList.add('active');
+      //给之前选中的元素去掉class
+      currentBtn.classList.remove('active');
+      //更新换代
+      currentBtn = e.target;
+      //赋值当前选中的序号
+      currentIndex = e.target.index;
+    }
+  }
+</script>
+
+</html>
