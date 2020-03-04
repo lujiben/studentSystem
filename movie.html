@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>豆瓣电影</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      border: none;
+    }
+
+    .top {
+      width: 100%;
+      height: 5rem;
+      background-color: #00B51D;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .top_title {
+      display: inline-block;
+      width: 100%;
+      height: auto;
+      margin: 0.75rem 0;
+    }
+
+    .seach {
+      width: 95%;
+      height: 1.25rem;
+      outline: none;
+      border: none;
+      border-radius: 0.125rem;
+      text-align: center;
+    }
+
+    .f_left {
+      float: left;
+      padding-left: 5%;
+    }
+
+    .f_right {
+      float: right;
+      padding-right: 5%;
+    }
+
+    .content p {
+      height: 1.25rem;
+      line-height: 1.25rem;
+      color: teal;
+    }
+
+    .movie_box {
+      display: flex;
+      width: 100%;
+      height: 12.5rem;
+      justify-content: space-evenly;
+    }
+
+    .movie_box .movie_item {
+      /* flex: 3; */
+      width: 32%;
+      height: inherit;
+      background-color: teal;
+    }
+
+    .movie_box .movie_item img {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top">
+    <span class="top_title">首页</span>
+    <input type="text" class="seach" placeholder="搜索" />
+  </div>
+
+  <div class="content">
+    <p>
+      <span class="f_left">热映电影</span>
+      <span class="f_right in_theaters_more">查看更多 &gt;</span>
+    </p>
+    <div class="in_theaters">
+    <div class="movie_box">
+      <div class="movie_item">
+        <a href=""><img src="./image/touxiang.png" alt=""></a>
+      </div>
+      <div class="movie_item">
+        <a href=""><img src="./image/touxiang.png" alt=""></a>
+      </div>
+      <div class="movie_item">
+        <a href=""><img src="./image/touxiang.png" alt=""></a>
+      </div>
+    </div>
+  </div>
+  <p>
+    <span class="f_left">即将上映</span>
+    <span class="f_right coming_soon_more">查看更多 &gt;</span>
+  </p>
+  <div class="coming_soon">
+    <!--即将上映-->
+    <div class="movie_box">
+      <div class="movie_item">
+        <a href=""><img src="./image/touxiang.png" alt=""></a>
+      </div>
+      <div class="movie_item">
+        <a href=""><img src="./image/touxiang.png" alt=""></a>
+      </div>
+      <div class="movie_item">
+        <a href=""><img src="./image/touxiang.png" alt=""></a>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script src="./js/network.js"></script>
+<script>
+  $(function () {
+    alert('点击查看更多')
+    $('.seach').focus(function () {
+      $('.seach').css({
+        'text-align': 'left',
+        'text-indent': '5%'
+      });
+    })
+    $('.seach').blur(function () {
+      $('.seach').css({
+        'text-align': 'center',
+        'text-indent': '0'
+      });
+    })
+    $('.in_theaters_more').click(function () {
+      //正在热映
+      $.ajax({
+        type: "get",
+        url: in_theaters,
+        data: {},
+        dataType: "json",
+        success: function (res) {
+          let data = res.subjects;
+          let content = '';
+          for (let i = 0; i < 3; i++) {
+            let h5 = `
+              <div class="movie_item">
+                <a href="${data[i].alt}" target="_blank">
+                  <img src="${data[i].images.medium}" alt="">
+                </a>
+              </div>        
+            `
+            content += h5;
+          }
+          let movie_box = `<div class='movie_box'>${content}</div>`
+          $('.in_theaters').html(movie_box);
+          alert('点击图片跳转');
+        }
+      });
+    })
+    //即将上映
+    $('.coming_soon_more').click(function () {
+      $.ajax({
+        type: "get",
+        url: coming_soon,
+        data: {},
+        dataType: "json",
+        success: function (res) {
+          let data = res.subjects;
+          let content = '';
+          for (let i = 0; i < 3; i++) {
+            let h5 = `
+              <div class="movie_item">
+                <a href="${data[i].alt}" target="_blank">
+                  <img src="${data[i].images.medium}" alt="">
+                </a>
+              </div>        
+            `
+            content += h5;
+          }
+          let movie_box = `<div class='movie_box'>${content}</div>`
+          $('.coming_soon').html(movie_box);
+          alert('点击图片跳转');
+        }
+      });
+    })
+  })
+</script>
+
+</html>

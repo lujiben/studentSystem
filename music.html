@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
       overflow-y: scroll;
       overflow-x: hidden;
     }
+
     .btn {
       width: 60px;
       height: 30px;
@@ -23,16 +25,20 @@
       text-align: center;
       border-radius: 5px;
     }
+
     .btn:hover {
       cursor: pointer;
     }
+
     .picUrl {
       width: 250px;
       height: 250px;
     }
+
     .listing {
       width: 100%;
     }
+
     .loading {
       position: fixed;
       left: 50%;
@@ -44,8 +50,9 @@
       border-bottom: solid 20px transparent;
       border-left: solid 20px transparent;
       border-radius: 50%;
-      animation: loading 5s ease-in infinite;
+      animation: loading 4s ease-in infinite;
     }
+
     @keyframes loading {
       0% {
         border-top-color: transparent;
@@ -53,24 +60,28 @@
         border-bottom-color: transparent;
         border-left-color: #FF79C6;
       }
+
       25% {
         border-top-color: #007CF9;
         border-right-color: transparent;
         border-bottom-color: transparent;
         border-left-color: transparent;
       }
+
       50% {
         border-top-color: transparent;
         border-right-color: #4FC1A0;
         border-bottom-color: transparent;
         border-left-color: transparent;
       }
+
       75% {
         border-top-color: transparent;
         border-right-color: transparent;
         border-bottom-color: #EF6329;
         border-left-color: transparent;
       }
+
       100% {
         border-top-color: transparent;
         border-right-color: transparent;
@@ -80,6 +91,7 @@
     }
   </style>
 </head>
+
 <body>
   <label for="song_id">音乐ID：</label>
   <input type="text" value="28012031" placeholder="请输入歌曲ID" name="" id="song_id">
@@ -93,16 +105,16 @@
   <br><br>
   <div class="btn">查看</div>
   <p class="content">
-  
+
   </p>
   <div class="loading"></div>
 </body>
 <script src="./js//jquery-3.3.1.min.js"></script>
 <script src="./layer/layer.js"></script>
 <script>
-  $(function() {
+  $(function () {
     //'https://api.imjad.cn/cloudmusic/?type='+type+'&id='+id+'&br=128000';
-    $('.btn').click(function() {
+    $('.btn').click(function () {
       // var load = layer.load(2, {time: 5*1000, offset: ['300px', '180px']});
       var id = $('#song_id').val();
       var type = $('input[type=radio]:checked').val();
@@ -116,7 +128,7 @@
         },
         dataType: "json",
         success: function (res) {
-          let h5;  
+          let h5;
           switch (type) {
             case 'song':
               h5 = `
@@ -134,7 +146,7 @@
               `
               break;
             case 'detail':
-            let songs = res.songs[0];
+              let songs = res.songs[0];
               h5 = `
                 <span>歌曲名称：${songs.name}</span><br/>
                 <span>专辑：${songs.alia[0]}</span><br/>
@@ -149,11 +161,12 @@
           // layer.close(load);
           console.log(res);
         },
-        error: function(error) {
+        error: function (error) {
           console.log(error);
         }
       });
     })
   })
 </script>
+
 </html>
